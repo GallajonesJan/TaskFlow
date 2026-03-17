@@ -119,34 +119,53 @@ router.put('/:id', async (req, res) => {
     if (error) throw error;
 
     // get users assigned to this task
-    const { data: assignedUsers, error: assignError } = await supabase
-      .from('task_assignments')
-      .select('user_id')
-      .eq('task_id', id);
+// get users assigned to this task
+const { data: assignedUsers, error: assignError } = await supabase
+  .from('task_assignments')
+  .select('user_id')
+  .eq('task_id', id);
 
-    if (assignError) throw assignError;
+if (assignError) throw assignError;
 
-    let message = `Task "${data.title}" has been updated.`;
+const assignedUserIds = (assignedUsers ?? []).map(a => a.user_id);
 
-    if (completed !== undefined) {
-      message = completed
-        ? `Task "${data.title}" was marked as completed.`
-        : `Task "${data.title}" was marked as pending.`;
-    }
+const { data: profiles, error: profilesError } = await supabase
+  .from('profiles')
+  .select('id, push_notifications')
+  .in('id', assignedUserIds);
 
-    const notifications = (assignedUsers ?? []).map(a => ({
-      user_id: a.user_id,
-      title: 'Task Updated',
-      message,
-    }));
+if (profilesError) throw profilesError;
 
-    if (notifications.length > 0) {
-      const { error: notifError } = await supabase
-        .from('notifications')
-        .insert(notifications);
+const allowedUserIds = new Set(
+  (profiles ?? [])
+    .filter(p => p.push_notifications)
+    .map(p => p.id)
+);
 
-      if (notifError) throw notifError;
-    }
+let message = `Task "${data.title}" has been updated.`;
+
+if (completed !== undefined) {
+  message = completed
+    ? `Task "${data.title}" was marked as completed.`
+    : `Task "${data.title}" was marked as pending.`;
+}
+
+const notifications = (assignedUsers ?? [])
+  .filter(a => allowedUserIds.has(a.user_id))
+  .map(a => ({
+    user_id: a.user_id,
+    task_id: id,
+    title: 'Task Updated',
+    message,
+  }));
+
+if (notifications.length > 0) {
+  const { error: notifError } = await supabase
+    .from('notifications')
+    .insert(notifications);
+
+  if (notifError) throw notifError;
+}
 
     res.json(data);
   } catch (err) {

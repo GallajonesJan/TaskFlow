@@ -44,9 +44,15 @@ router.post('/', async (req, res) => {
     const { taskId } = req.params;
     const { body, userId } = req.body;
 
-    if (!body?.trim()) return res.status(400).json({ error: 'Comment body is required.' });
-    if (!userId) return res.status(400).json({ error: 'userId is required.' });
+    if (!body?.trim()) {
+      return res.status(400).json({ error: 'Comment body is required.' });
+    }
 
+    if (!userId) {
+      return res.status(400).json({ error: 'userId is required.' });
+    }
+
+    // 1. Save comment first
     const { data, error } = await supabase
       .from('task_comments')
       .insert([{ task_id: taskId, user_id: userId, body: body.trim() }])
@@ -55,51 +61,88 @@ router.post('/', async (req, res) => {
 
     if (error) throw error;
 
-    // get task info
-    const { data: task, error: taskError } = await supabase
-      .from('tasks')
-      .select('title')
-      .eq('id', taskId)
-      .single();
+    // Return comment success even if notifications/email fail
+    const [enriched] = await enrichWithProfiles([data]);
 
-    if (taskError) throw taskError;
+    // 2. Run notification/email logic separately
+    try {
+      const { data: task, error: taskError } = await supabase
+        .from('tasks')
+        .select('title')
+        .eq('id', taskId)
+        .single();
 
-    // get assigned users
-    const { data: assignedUsers, error: assignError } = await supabase
-      .from('task_assignments')
-      .select('user_id')
-      .eq('task_id', taskId);
+      if (taskError) throw taskError;
 
-    if (assignError) throw assignError;
+      const { data: assignedUsers, error: assignError } = await supabase
+        .from('task_assignments')
+        .select('user_id')
+        .eq('task_id', taskId);
 
-    // notify assigned users except commenter
-    const notifications = (assignedUsers ?? [])
-      .filter(a => a.user_id !== userId)
-      .map(a => ({
-        user_id: a.user_id,
-        title: 'New Comment',
-        message: `New comment on "${task.title}".`,
-      }));
+      if (assignError) throw assignError;
 
-    if (notifications.length > 0) {
-      const { error: notifError } = await supabase
-        .from('notifications')
-        .insert(notifications);
+      const assignedUserIds = (assignedUsers ?? []).map(a => a.user_id);
 
-      if (notifError) throw notifError;
+      let allowedUserIds = new Set();
+
+      if (assignedUserIds.length > 0) {
+        const { data: profiles, error: profilesError } = await supabase
+          .from('profiles')
+          .select('id, push_notifications')
+          .in('id', assignedUserIds);
+
+        if (profilesError) throw profilesError;
+
+        allowedUserIds = new Set(
+          (profiles ?? [])
+            .filter(p => p.push_notifications ?? true)
+            .map(p => p.id)
+        );
+      }
+
+      const notifications = (assignedUsers ?? [])
+        .filter(a => a.user_id !== userId && (allowedUserIds.size === 0 || allowedUserIds.has(a.user_id)))
+        .map(a => ({
+          user_id: a.user_id,
+          task_id: taskId,
+          title: 'New Comment',
+          message: `New comment on "${task.title}".`,
+        }));
+
+      if (notifications.length > 0) {
+        const { error: notifError } = await supabase
+          .from('notifications')
+          .insert(notifications);
+
+        if (notifError) throw notifError;
+      }
+
+      // admin email is optional
+      if (process.env.ADMIN_EMAIL) {
+        const { data: adminProfile, error: adminError } = await supabase
+          .from('profiles')
+          .select('id, email, email_notifications')
+          .eq('email', process.env.ADMIN_EMAIL)
+          .maybeSingle();
+
+        if (adminError) throw adminError;
+
+        if (adminProfile?.email_notifications) {
+          await transporter.sendMail({
+            from: process.env.EMAIL_USER,
+            to: process.env.ADMIN_EMAIL,
+            subject: `New comment on task: ${task.title}`,
+            text: `A new comment was added to the task "${task.title}":\n\n${body.trim()}`,
+          });
+        }
+      }
+    } catch (sideEffectErr) {
+      console.error('COMMENT SIDE EFFECT ERROR:', sideEffectErr);
     }
 
-    // email admin
-    await transporter.sendMail({
-      from: process.env.EMAIL_USER,
-      to: process.env.ADMIN_EMAIL,
-      subject: `New comment on task: ${task.title}`,
-      text: `A new comment was added to the task "${task.title}":\n\n${body.trim()}`,
-    });
-
-    const [enriched] = await enrichWithProfiles([data]);
     res.status(201).json(enriched);
   } catch (err) {
+    console.error('POST COMMENT ERROR:', err);
     res.status(500).json({ error: 'Failed to post comment.', details: err.message });
   }
 });

@@ -1,6 +1,10 @@
 {
-  "env": {
-    "node": true,
-    "es2022": true
-  }
+  "overrides": [
+    {
+      "files": ["server/**/*.js", "serverRoutes/**/*.js"],
+      "env": {
+        "node": true
+      }
+    }
+  ]
 }

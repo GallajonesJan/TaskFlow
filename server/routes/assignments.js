@@ -58,27 +58,48 @@ router.post('/', requireAdmin, async (req, res) => {
 
     if (error) throw error;
 
-    const { data: task, error: taskError } = await supabase
-      .from('tasks')
-      .select('title')
-      .eq('id', taskId)
-      .single();
+// get task title
+const { data: task, error: taskError } = await supabase
+  .from('tasks')
+  .select('title')
+  .eq('id', taskId)
+  .single();
 
-    if (taskError) throw taskError;
+if (taskError) throw taskError;
 
-    const notifications = (data ?? []).map(a => ({
-      user_id: a.user_id,
-      title: 'New Task Assigned',
-      message: `You have been assigned to "${task.title}".`,
-    }));
+// get notification preferences of assigned users
+const assignedUserIds = (data ?? []).map(a => a.user_id);
 
-    if (notifications.length > 0) {
-      const { error: notifError } = await supabase
-        .from('notifications')
-        .insert(notifications);
+const { data: profiles, error: profilesError } = await supabase
+  .from('profiles')
+  .select('id, push_notifications')
+  .in('id', assignedUserIds);
 
-      if (notifError) throw notifError;
-    }
+if (profilesError) throw profilesError;
+
+const allowedUserIds = new Set(
+  (profiles ?? [])
+    .filter(p => p.push_notifications)
+    .map(p => p.id)
+);
+
+// create notifications only for users who enabled push notifications
+const notifications = (data ?? [])
+  .filter(a => allowedUserIds.has(a.user_id))
+  .map(a => ({
+    user_id: a.user_id,
+    task_id: taskId,
+    title: 'New Task Assigned',
+    message: `You have been assigned to "${task.title}".`,
+  }));
+
+if (notifications.length > 0) {
+  const { error: notifError } = await supabase
+    .from('notifications')
+    .insert(notifications);
+
+  if (notifError) throw notifError;
+}
 
     const enriched = await enrichWithProfiles(data ?? []);
     res.status(201).json(enriched);
