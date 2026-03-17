@@ -1,0 +1,149 @@
+@use '../styles/variables' as v;
+
+.calendar-page {
+
+  &__nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+  }
+
+  &__month {
+    font-size: 18px;
+    font-weight: v.$fw-bold;
+    color: v.$dark-2;
+  }
+
+  &__nav-btns {
+    display: flex;
+    gap: 8px;
+  }
+
+  &__nav-btn {
+    width: 30px;
+    height: 30px;
+    border-radius: v.$radius-md;
+    border: 1.5px solid v.$grey-5;
+    background: v.$white;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: v.$transition;
+
+    &:hover {
+      border-color: v.$primary;
+      color: v.$primary;
+    }
+  }
+
+  // ── Legend ──────────────────────────────────────────────────────────────────
+  &__legend {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    margin-top: 14px;
+    font-size: 12.5px;
+    color: v.$grey-2;
+  }
+
+  &__legend-label {
+    font-weight: v.$fw-semibold;
+    color: v.$grey-1;
+  }
+
+  &__legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  &__legend-dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+  }
+}
+
+// ── Calendar Grid ─────────────────────────────────────────────────────────────
+.cal-grid {
+  background: v.$white;
+  border-radius: v.$radius-2xl;
+  overflow: hidden;
+  box-shadow: v.$shadow-md;
+
+  &__header {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    border-bottom: 1px solid v.$grey-6;
+  }
+
+  &__day-name {
+    padding: 11px;
+    text-align: center;
+    font-size: 12.5px;
+    font-weight: v.$fw-semibold;
+    color: v.$grey-3;
+  }
+
+  &__body {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+  }
+}
+
+// ── Calendar Cell ─────────────────────────────────────────────────────────────
+.cal-cell {
+  min-height: 88px;
+  padding: 8px;
+  border-right: 1px solid v.$grey-7;
+  border-bottom: 1px solid v.$grey-7;
+
+  &:nth-child(7n) {
+    border-right: none;
+  }
+
+  &__date {
+    font-size: 12.5px;
+    font-weight: v.$fw-semibold;
+    color: v.$dark-2;
+    margin-bottom: 5px;
+  }
+
+  &--today {
+    background: v.$primary-muted;
+
+    .cal-cell__date {
+      background: v.$primary;
+      color: v.$white;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11.5px;
+    }
+  }
+
+  &__event {
+    font-size: 10.5px;
+    padding: 2px 5px;
+    border-radius: 4px;
+    margin-bottom: 2px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &__event-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+}

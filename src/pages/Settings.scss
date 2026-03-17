@@ -1,0 +1,145 @@
+@use '../styles/variables' as v;
+
+.settings {
+  max-width: 720px;
+
+  &__save-btn { margin-top: 4px; }
+
+  &__theme-hint {
+    font-size: 12.5px;
+    color: var(--text-muted);
+    font-style: italic;
+    margin-top: 12px;
+  }
+
+  &__footer {
+    text-align: center;
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 8px;
+    padding-bottom: 8px;
+  }
+}
+
+// ── Section card ──────────────────────────────────────────────────────────────
+.settings-section {
+  background: var(--surface);
+  border-radius: v.$radius-2xl;
+  padding: 24px;
+  margin-bottom: 16px;
+  box-shadow: v.$shadow-md;
+
+  &__header {
+    display: flex; align-items: flex-start; gap: 12px;
+    padding-bottom: 18px; margin-bottom: 20px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  &__icon {
+    width: 36px; height: 36px; border-radius: v.$radius-lg; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    svg { stroke: var(--icon-stroke, v.$primary); }
+  }
+
+  &__title    { font-size: 14.5px; font-weight: v.$fw-bold; color: var(--text-primary); }
+  &__subtitle { font-size: 12.5px; color: var(--text-muted); margin-top: 2px; }
+  &__body     { display: flex; flex-direction: column; gap: 14px; }
+}
+
+// ── Form fields ───────────────────────────────────────────────────────────────
+.settings-field {
+  display: flex; flex-direction: column; gap: 6px;
+
+  &__label { font-size: 13px; font-weight: v.$fw-semibold; color: var(--text-secondary); }
+
+  &__input {
+    padding: 10px 14px; border-radius: v.$radius-lg;
+    border: 1.5px solid var(--border); font-size: 13.5px;
+    color: var(--text-primary); background: var(--surface-2);
+    outline: none; transition: v.$transition;
+    &:focus { border-color: v.$primary; box-shadow: 0 0 0 3px rgba(99,102,241,.1); background: var(--surface); }
+    &::placeholder { color: var(--text-muted); }
+  }
+}
+
+// ── Theme picker ──────────────────────────────────────────────────────────────
+.settings-theme-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+
+  @media (max-width: 520px) { grid-template-columns: 1fr; }
+}
+
+.settings-theme-btn {
+  position: relative;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 9px; padding: 22px 12px;
+  border-radius: v.$radius-xl; border: 1.5px solid var(--border);
+  background: var(--surface-2); color: var(--text-secondary);
+  font-size: 13.5px; font-weight: v.$fw-medium;
+  cursor: pointer; transition: v.$transition;
+
+  svg { stroke: currentColor; }
+
+  &:hover:not(&--active) {
+    border-color: v.$primary;
+    color: v.$primary;
+    background: v.$primary-light;
+  }
+
+  &--active {
+    border-color: v.$primary;
+    background: v.$primary-muted;
+    color: v.$primary;
+    font-weight: v.$fw-semibold;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.12);
+  }
+
+  &__check {
+    position: absolute; top: 8px; right: 8px;
+    width: 18px; height: 18px; border-radius: 50%;
+    background: v.$primary;
+    display: flex; align-items: center; justify-content: center;
+    svg { stroke: white; width: 10px; height: 10px; }
+  }
+}
+
+// ── Toggle switch ─────────────────────────────────────────────────────────────
+.settings-toggle {
+  width: 44px; height: 24px; border-radius: v.$radius-full;
+  border: none; padding: 2px; background: var(--border);
+  cursor: pointer; transition: background 0.2s ease;
+  flex-shrink: 0; display: flex; align-items: center;
+
+  &--on { background: v.$primary; justify-content: flex-end; }
+
+  &__thumb {
+    width: 20px; height: 20px; border-radius: 50%;
+    background: white; box-shadow: 0 1px 3px rgba(0,0,0,.2);
+    display: block; transition: v.$transition;
+  }
+}
+
+// ── Notification rows ─────────────────────────────────────────────────────────
+.settings-row {
+  display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 4px 0;
+  &__label { font-size: 13.5px; font-weight: v.$fw-medium; color: var(--text-primary); }
+  &__sub   { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+}
+
+// ── Data buttons ──────────────────────────────────────────────────────────────
+.settings-data-btns { display: flex; gap: 10px; flex-wrap: wrap; }
+
+.settings-data-btn {
+  padding: 9px 16px; border-radius: v.$radius-lg;
+  border: 1.5px solid var(--border); background: var(--surface-2);
+  font-size: 13px; font-weight: v.$fw-medium; color: var(--text-secondary);
+  cursor: pointer; transition: v.$transition;
+  &:hover { border-color: v.$grey-3; color: var(--text-primary); background: var(--surface); }
+
+  &--danger {
+    color: v.$red; border-color: rgba(239, 68, 68, 0.3);
+    &:hover { background: v.$red-light; border-color: v.$red; }
+  }
+}

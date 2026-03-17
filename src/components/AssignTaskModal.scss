@@ -1,0 +1,70 @@
+@use '../styles/variables' as v;
+
+.assign-modal {
+  max-width: 440px;
+
+  &__task-name {
+    font-size: 13px; color: var(--text-muted);
+    margin-top: 2px; font-weight: v.$fw-medium;
+    max-width: 340px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+
+  &__body { padding: 16px 24px; }
+
+  &__search {
+    position: relative; margin-bottom: 14px;
+    svg { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); stroke: var(--text-muted); }
+  }
+
+  &__search-input {
+    width: 100%; padding: 9px 12px 9px 34px;
+    border-radius: v.$radius-lg; border: 1.5px solid var(--border);
+    font-size: 13.5px; color: var(--text-primary); background: var(--surface-2);
+    outline: none; font-family: v.$font-family;
+    &:focus { border-color: v.$primary; background: var(--surface); }
+    &::placeholder { color: var(--text-muted); }
+  }
+
+  &__count {
+    font-size: 12.5px; color: v.$primary; font-weight: v.$fw-semibold;
+    margin-bottom: 10px;
+  }
+
+  &__list {
+    display: flex; flex-direction: column; gap: 6px;
+    max-height: 300px; overflow-y: auto;
+  }
+
+  &__empty { font-size: 13.5px; color: var(--text-muted); text-align: center; padding: 24px 0; }
+
+  &__user {
+    display: flex; align-items: center; gap: 12px;
+    padding: 10px 12px; border-radius: v.$radius-lg;
+    border: 1.5px solid var(--border); background: var(--surface-2);
+    cursor: pointer; text-align: left; transition: v.$transition; width: 100%;
+
+    &:hover { border-color: v.$primary; background: v.$primary-light; }
+
+    &--selected {
+      border-color: v.$primary; background: v.$primary-light;
+    }
+  }
+
+  &__avatar {
+    width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0;
+    background: linear-gradient(135deg, v.$primary, #a78bfa);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: v.$fw-bold; color: white;
+  }
+
+  &__user-info { flex: 1; min-width: 0; }
+  &__user-name  { font-size: 13.5px; font-weight: v.$fw-semibold; color: var(--text-primary); }
+  &__user-email { font-size: 12px; color: var(--text-muted); }
+
+  &__check {
+    width: 22px; height: 22px; border-radius: 50%;
+    background: v.$primary; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    svg { stroke: white; }
+  }
+}

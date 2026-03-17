@@ -1,0 +1,45 @@
+@use '../styles/variables' as v;
+
+.toast-container {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 200;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  pointer-events: none;
+}
+
+.toast {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 18px;
+  border-radius: v.$radius-xl;
+  font-size: 13.5px;
+  font-weight: v.$fw-medium;
+  box-shadow: 0 8px 24px rgba(0,0,0,.14);
+  pointer-events: all;
+  cursor: pointer;
+  animation: toastIn 0.2s ease;
+  min-width: 220px;
+  max-width: 340px;
+
+  &--success { background: #166534; color: #bbf7d0; }
+  &--error   { background: #7f1d1d; color: #fecaca; }
+  &--info    { background: #1e3a5f; color: #bfdbfe; }
+
+  &__icon {
+    font-size: 14px;
+    font-weight: v.$fw-bold;
+    flex-shrink: 0;
+  }
+
+  &__message { flex: 1; line-height: 1.4; }
+}
+
+@keyframes toastIn {
+  from { opacity: 0; transform: translateX(16px); }
+  to   { opacity: 1; transform: translateX(0); }
+}

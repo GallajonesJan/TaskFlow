@@ -1,0 +1,92 @@
+@use '../styles/variables' as v;
+
+.sidebar {
+  width: v.$sidebar-width; min-width: v.$sidebar-width;
+  height: 100vh; background: var(--surface);
+  border-right: 1px solid var(--border);
+  display: flex; flex-direction: column; padding: 22px 0 16px;
+  transition: background 0.2s ease;
+
+  @media (max-width: 768px) {
+    width: 100%; height: auto; min-width: unset;
+    flex-direction: row; align-items: center;
+    padding: 12px 16px; border-right: none;
+    border-bottom: 1px solid var(--border);
+  }
+
+  &__logo {
+    display: flex; align-items: center; gap: 10px; padding: 0 18px 24px;
+    @media (max-width: 768px) { padding: 0; flex: 1; }
+  }
+  &__logo-icon {
+    width: 32px; height: 32px; border-radius: 9px; flex-shrink: 0;
+    background: linear-gradient(135deg, #5b5fcf, #818cf8);
+    display: flex; align-items: center; justify-content: center;
+    svg { width: 16px; height: 16px; }
+  }
+  &__logo-text { font-size: 16px; font-weight: v.$fw-bold; color: var(--text-primary); letter-spacing: -0.3px; }
+
+  &__nav {
+    flex: 1; padding: 0 10px; display: flex; flex-direction: column; gap: 2px;
+    @media (max-width: 768px) {
+      flex-direction: row; padding: 0; gap: 4px; flex: none;
+      span { display: none; }
+    }
+  }
+
+  &__nav-item {
+    width: 100%; display: flex; align-items: center; gap: 10px;
+    padding: 9px 10px; border-radius: v.$radius-md; border: none;
+    background: none; font-size: 13.5px; font-weight: v.$fw-medium;
+    color: var(--text-secondary); cursor: pointer; text-align: left; transition: v.$transition;
+    &:hover { background: var(--surface-2); color: var(--text-primary); }
+    &--active { background: v.$primary; color: v.$white; svg { stroke: v.$white; } &:hover { background: v.$primary-dark; } }
+    @media (max-width: 768px) { width: auto; padding: 8px; }
+  }
+
+  &__bottom {
+    padding: 0 10px;
+    @media (max-width: 768px) { display: none; }
+  }
+
+  &__theme-btn {
+    width: 100%; display: flex; align-items: center; gap: 10px;
+    padding: 9px 10px; border-radius: v.$radius-md; border: none;
+    background: none; font-size: 13px; font-weight: v.$fw-medium;
+    color: var(--text-secondary); cursor: pointer; transition: v.$transition; margin-bottom: 4px;
+    &:hover { background: var(--surface-2); color: var(--text-primary); }
+  }
+
+  &__user {
+    padding: 10px 8px; border-radius: v.$radius-md;
+    border-top: 1px solid var(--border); display: flex; align-items: center; gap: 9px;
+    cursor: pointer; transition: v.$transition; margin-top: 4px;
+    &:hover { background: var(--surface-2); }
+  }
+  &__user-avatar {
+    width: 34px; height: 34px; border-radius: 50%; flex-shrink: 0;
+    background: linear-gradient(135deg, v.$primary, #a78bfa);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: v.$fw-bold; color: v.$white;
+  }
+  &__user-info { flex: 1; min-width: 0; }
+  &__user-name  { font-size: 13px; font-weight: v.$fw-semibold; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  &__user-email { font-size: 11px; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  &__logout {
+    background: none; border: none; cursor: pointer; color: var(--text-muted);
+    padding: 3px; border-radius: 5px; display: flex; align-items: center; flex-shrink: 0;
+    transition: v.$transition;
+    &:hover { background: var(--surface-2); color: var(--text-secondary); }
+  }
+  &__user--clickable {
+  cursor: pointer;
+  &:hover { background: var(--surface-2); }
+}
+
+&__user-arrow {
+  color: var(--text-muted);
+  font-size: 18px;
+  flex-shrink: 0;
+}
+}
+

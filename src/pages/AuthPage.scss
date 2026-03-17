@@ -1,0 +1,147 @@
+@use '../styles/variables' as v;
+
+.auth-page {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 100vh;
+  font-family: v.$font-family;
+
+  @media (max-width: 768px) { grid-template-columns: 1fr; }
+
+  // ── Left branding panel ───────────────────────────────────────────────────
+  &__left {
+    background: linear-gradient(145deg, v.$primary-dark 0%, #7c3aed 100%);
+    display: flex; align-items: center; justify-content: center;
+    padding: 60px 52px; position: relative; overflow: hidden;
+
+    &::before {
+      content: ''; position: absolute;
+      width: 400px; height: 400px; border-radius: 50%;
+      background: rgba(255,255,255,.05); top: -100px; right: -100px;
+    }
+    &::after {
+      content: ''; position: absolute;
+      width: 300px; height: 300px; border-radius: 50%;
+      background: rgba(255,255,255,.04); bottom: -80px; left: -80px;
+    }
+    @media (max-width: 768px) { display: none; }
+  }
+
+  &__left-inner { position: relative; z-index: 1; }
+
+  &__logo {
+    display: flex; align-items: center; gap: 10px;
+    font-size: 18px; font-weight: v.$fw-bold; color: white;
+    margin-bottom: 52px; cursor: pointer;
+  }
+
+  &__logo-icon {
+    width: 36px; height: 36px; border-radius: 10px;
+    background: rgba(255,255,255,.2);
+    display: flex; align-items: center; justify-content: center;
+    svg { width: 18px; height: 18px; }
+  }
+
+  &__left-title {
+    font-size: 32px; font-weight: v.$fw-bold; color: white;
+    letter-spacing: -0.8px; line-height: 1.25; margin-bottom: 36px;
+    white-space: pre-line;
+  }
+
+  &__left-perks {
+    list-style: none; display: flex; flex-direction: column; gap: 14px;
+    li { display: flex; align-items: center; gap: 12px; font-size: 14.5px; color: rgba(255,255,255,.85); }
+  }
+
+  &__perk-dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,.6); flex-shrink: 0; }
+
+  // ── Right form panel ──────────────────────────────────────────────────────
+  &__right {
+    background: var(--surface);
+    display: flex; align-items: center; justify-content: center;
+    padding: 60px 40px;
+  }
+
+  &__form-wrap { width: 100%; max-width: 380px; }
+
+  &__title {
+    font-size: 26px; font-weight: v.$fw-bold; color: var(--text-primary);
+    letter-spacing: -0.5px; margin-bottom: 8px;
+  }
+
+  &__subtitle { font-size: 14px; color: var(--text-muted); margin-bottom: 24px; }
+
+  &__link {
+    color: v.$primary; text-decoration: none; font-weight: v.$fw-semibold;
+    &:hover { text-decoration: underline; }
+    &--sm { font-size: 12.5px; }
+  }
+
+  &__error {
+    background: #fef2f2; color: v.$red; border: 1px solid #fecaca;
+    border-radius: v.$radius-lg; padding: 11px 14px;
+    font-size: 13.5px; font-weight: v.$fw-medium; margin-bottom: 18px;
+  }
+
+  // ── Google button ─────────────────────────────────────────────────────────
+  &__google-btn {
+    width: 100%; display: flex; align-items: center; justify-content: center; gap: 10px;
+    padding: 11px 16px; border-radius: v.$radius-lg;
+    border: 1.5px solid var(--border); background: var(--surface);
+    font-size: 14px; font-weight: v.$fw-semibold; color: var(--text-primary);
+    cursor: pointer; transition: v.$transition; font-family: v.$font-family;
+    margin-bottom: 18px;
+    &:hover:not(:disabled) { border-color: v.$grey-3; background: var(--surface-2); box-shadow: v.$shadow-md; }
+    &:disabled { opacity: 0.6; cursor: not-allowed; }
+  }
+
+  // ── Divider ───────────────────────────────────────────────────────────────
+  &__divider {
+    display: flex; align-items: center; gap: 12px; margin-bottom: 20px;
+    &::before, &::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+    span { font-size: 12px; color: var(--text-muted); white-space: nowrap; }
+  }
+
+  &__form { display: flex; flex-direction: column; gap: 18px; }
+
+  &__submit {
+    width: 100%; padding: 12px;
+    background: v.$primary; color: white;
+    border: none; border-radius: v.$radius-lg;
+    font-size: 15px; font-weight: v.$fw-semibold;
+    cursor: pointer; transition: v.$transition; margin-top: 4px;
+    font-family: v.$font-family;
+    &:hover:not(:disabled) { background: v.$primary-dark; transform: translateY(-1px); box-shadow: 0 4px 14px rgba(99,102,241,.3); }
+    &:disabled { opacity: 0.6; cursor: not-allowed; }
+  }
+
+  // ── Sent success state ────────────────────────────────────────────────────
+  &__sent { text-align: center; }
+  &__sent-icon { font-size: 48px; margin-bottom: 16px; }
+}
+
+// ── Form fields ───────────────────────────────────────────────────────────────
+.auth-field {
+  display: flex; flex-direction: column; gap: 6px;
+
+  &__label { font-size: 13px; font-weight: v.$fw-semibold; color: var(--text-secondary); }
+  &__label-row { display: flex; align-items: center; justify-content: space-between; }
+
+  &__input {
+    padding: 10px 14px; border-radius: v.$radius-lg;
+    border: 1.5px solid var(--border); font-size: 14px;
+    color: var(--text-primary); background: var(--surface-2);
+    outline: none; transition: v.$transition; font-family: v.$font-family;
+    &:focus { border-color: v.$primary; box-shadow: 0 0 0 3px rgba(99,102,241,.1); background: var(--surface); }
+    &::placeholder { color: var(--text-muted); }
+  }
+
+  &__password-wrap { position: relative; }
+  &__password-wrap &__input { padding-right: 42px; width: 100%; }
+  &__eye {
+    position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+    background: none; border: none; cursor: pointer; color: var(--text-muted);
+    display: flex; align-items: center; padding: 0;
+    &:hover { color: var(--text-primary); }
+  }
+}

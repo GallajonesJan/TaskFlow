@@ -1,0 +1,22 @@
+@use '../styles/variables' as v;
+
+.task-list {
+  display: flex;
+  flex-direction: column;
+
+  &--empty {
+    padding: 48px 24px;
+    text-align: center;
+    background: var(--surface);
+    border-radius: v.$radius-2xl;
+    border: 1.5px dashed var(--border);
+  }
+
+  &__empty-icon { font-size: 32px; margin-bottom: 10px; }
+
+  &__empty-text {
+    font-size: 14px;
+    color: var(--text-muted);
+    font-weight: v.$fw-medium;
+  }
+}

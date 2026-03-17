@@ -1,0 +1,54 @@
+@use '../styles/variables' as v;
+
+.my-tasks {
+  &__count-badge {
+    background: var(--surface-2); color: var(--text-muted);
+    border-radius: v.$radius-full; padding: 2px 8px;
+    font-size: 12px; font-weight: v.$fw-semibold; margin-left: 8px; vertical-align: middle;
+  }
+
+  &__filters {
+    display: flex; align-items: center; gap: 8px; margin-bottom: 6px; flex-wrap: wrap;
+  }
+
+  &__tab-group { display: flex; gap: 4px; }
+
+  &__filter-tab {
+    padding: 7px 13px; border-radius: v.$radius-md;
+    font-size: 13px; font-weight: v.$fw-medium;
+    border: 1.5px solid var(--border); background: var(--surface);
+    color: var(--text-secondary); cursor: pointer; transition: v.$transition;
+    &:hover:not(&--active) { border-color: v.$primary; color: v.$primary; }
+    &--active { background: v.$primary; color: v.$white; border-color: v.$primary; }
+  }
+
+  &__select {
+    padding: 7px 11px; border-radius: v.$radius-md;
+    font-size: 13px; font-weight: v.$fw-medium;
+    border: 1.5px solid var(--border); background: var(--surface);
+    color: var(--text-secondary); cursor: pointer; outline: none; transition: v.$transition;
+    &:focus { border-color: v.$primary; }
+  }
+
+  &__search {
+    position: relative; flex: 1; min-width: 160px; max-width: 280px; margin-left: auto;
+    svg:first-child { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); stroke: var(--text-muted); pointer-events: none; }
+  }
+  &__search-input {
+    width: 100%; padding: 7px 32px 7px 33px; border-radius: v.$radius-md;
+    border: 1.5px solid var(--border); font-size: 13px; color: var(--text-primary);
+    outline: none; background: var(--surface); transition: v.$transition;
+    &:focus { border-color: v.$primary; }
+    &::placeholder { color: var(--text-muted); }
+  }
+  &__search-clear {
+    position: absolute; right: 8px; top: 50%; transform: translateY(-50%);
+    background: none; border: none; cursor: pointer; color: var(--text-muted);
+    display: flex; align-items: center; padding: 2px; border-radius: 4px;
+    &:hover { color: var(--text-primary); }
+  }
+
+  &__results-count {
+    font-size: 12.5px; color: var(--text-muted); margin-bottom: 12px; font-weight: v.$fw-medium;
+  }
+}

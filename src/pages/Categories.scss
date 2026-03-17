@@ -1,0 +1,138 @@
+@use '../styles/variables' as v;
+
+.categories {
+
+  // ── Summary Stats ────────────────────────────────────────────────────────────
+  &__stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+    margin-bottom: 20px;
+  }
+
+  &__mini-stat {
+    background: v.$white;
+    border-radius: v.$radius-2xl;
+    padding: 18px 20px;
+    box-shadow: v.$shadow-md;
+  }
+
+  &__mini-label {
+    font-size: 12.5px;
+    color: v.$grey-3;
+    font-weight: v.$fw-medium;
+    margin-bottom: 7px;
+  }
+
+  &__mini-value {
+    font-size: 26px;
+    font-weight: v.$fw-bold;
+    letter-spacing: -0.5px;
+  }
+
+  // ── Grid ─────────────────────────────────────────────────────────────────────
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+  }
+}
+
+// ── Category Card ─────────────────────────────────────────────────────────────
+.cat-card {
+  background: v.$white;
+  border-radius: v.$radius-2xl;
+  padding: 20px;
+  box-shadow: v.$shadow-md;
+
+  &__header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 18px;
+  }
+
+  &__info {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+  }
+
+  &__icon {
+    width: 40px;
+    height: 40px;
+    border-radius: v.$radius-lg;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  &__name {
+    font-size: 15px;
+    font-weight: v.$fw-bold;
+    color: v.$dark-2;
+  }
+
+  &__count {
+    font-size: 12.5px;
+    color: v.$grey-3;
+  }
+
+  &__actions {
+    display: flex;
+    gap: 4px;
+  }
+
+  &__action-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: v.$transition;
+
+    &--edit {
+      color: v.$grey-3;
+      &:hover { background: v.$grey-6; color: v.$primary; }
+    }
+
+    &--delete {
+      color: #fca5a5;
+      &:hover { background: v.$red-light; color: v.$red; }
+    }
+  }
+
+  // ── Progress ─────────────────────────────────────────────────────────────────
+  &__progress-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12.5px;
+    color: v.$grey-2;
+    margin-bottom: 6px;
+  }
+
+  &__progress-track {
+    background: v.$grey-6;
+    border-radius: v.$radius-full;
+    height: 6px;
+    overflow: hidden;
+  }
+
+  &__progress-fill {
+    height: 6px;
+    border-radius: v.$radius-full;
+    transition: width 0.3s ease;
+  }
+
+  &__progress-footer {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11.5px;
+    color: v.$grey-3;
+    margin-top: 7px;
+  }
+}

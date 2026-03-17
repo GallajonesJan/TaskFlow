@@ -1,0 +1,27 @@
+@use '../styles/variables' as v;
+
+.cat-modal {
+  &__colors {
+    display: flex; flex-wrap: wrap; gap: 10px; margin-top: 4px;
+  }
+
+  &__color-btn {
+    width: 30px; height: 30px; border-radius: 50%;
+    border: 3px solid transparent;
+    cursor: pointer; transition: v.$transition;
+    outline: none;
+
+    &:hover { transform: scale(1.15); }
+    &--active { border-color: var(--text-primary); transform: scale(1.15); }
+  }
+
+  &__preview {
+    margin-top: 14px;
+  }
+
+  &__preview-badge {
+    display: inline-flex; align-items: center;
+    padding: 5px 12px; border-radius: v.$radius-full;
+    font-size: 13px; font-weight: v.$fw-semibold;
+  }
+}

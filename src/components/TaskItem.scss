@@ -1,0 +1,100 @@
+@use '../styles/variables' as v;
+
+.task-item {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  background: var(--surface);
+  border-radius: v.$radius-xl;
+  padding: 13px 16px;
+  margin-bottom: 9px;
+  box-shadow: v.$shadow-sm;
+  border: 1px solid transparent;
+  transition: v.$transition, box-shadow 0.14s;
+  position: relative;
+
+  &:hover {
+    box-shadow: v.$shadow-lg;
+    border-color: var(--border);
+
+    .task-item__actions { opacity: 1; }
+  }
+
+  &--done  { opacity: 0.65; }
+  &--overdue { border-left: 3px solid v.$red; }
+
+  // ── Checkbox ──────────────────────────────────────────────────────────────
+  &__checkbox {
+    width: 22px; height: 22px; border-radius: 50%;
+    border: 2px solid v.$grey-4; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; background: none; transition: v.$transition;
+
+    &:hover:not(&--checked) { border-color: v.$primary; background: v.$primary-light; }
+    &--checked { background: v.$primary; border-color: v.$primary; svg { stroke: v.$white; } }
+  }
+
+  // ── Title ──────────────────────────────────────────────────────────────────
+  &__title {
+    font-size: 13.5px; font-weight: v.$fw-medium;
+    color: var(--text-primary); flex: 1; min-width: 0;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+
+    &--done { text-decoration: line-through; color: var(--text-muted); }
+  }
+
+  // ── Meta ───────────────────────────────────────────────────────────────────
+  &__meta {
+    display: flex; align-items: center; gap: 7px; flex-shrink: 0;
+
+    @media (max-width: 600px) { display: none; }
+  }
+
+  &__priority {
+    display: flex; align-items: center; gap: 5px;
+    font-size: 11.5px; font-weight: v.$fw-semibold;
+    padding: 3px 8px; border-radius: v.$radius-full;
+
+    &--high   { color: v.$red;    background: v.$red-light; }
+    &--medium { color: v.$orange; background: v.$orange-light; }
+    &--low    { color: v.$green;  background: v.$green-light; }
+  }
+
+  &__priority-dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    .task-item__priority--high   & { background: v.$red; }
+    .task-item__priority--medium & { background: v.$orange; }
+    .task-item__priority--low    & { background: v.$green; }
+  }
+
+  &__category {
+    background: var(--surface-2); color: var(--text-secondary);
+    border-radius: v.$radius-sm; padding: 3px 8px;
+    font-size: 11.5px; font-weight: v.$fw-medium;
+  }
+
+  &__date {
+    display: flex; align-items: center; gap: 4px;
+    font-size: 11.5px; color: var(--text-muted);
+    svg { stroke: currentColor; }
+    &--overdue { color: v.$red; font-weight: v.$fw-semibold; }
+  }
+
+  // ── Action buttons (fade in on row hover) ──────────────────────────────────
+  &__actions {
+    display: flex; gap: 4px; flex-shrink: 0;
+    opacity: 0; transition: opacity 0.14s;
+  }
+
+  &__action-btn {
+    width: 28px; height: 28px; border-radius: v.$radius-md;
+    border: none; background: none; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: v.$transition;
+
+    &--edit  { color: v.$grey-3; &:hover { background: v.$primary-light; color: v.$primary; } }
+    &--delete{ color: v.$grey-3; &:hover { background: v.$red-light;     color: v.$red;     } }
+  }
+
+  
+}
