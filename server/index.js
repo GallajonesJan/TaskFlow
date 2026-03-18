@@ -40,6 +40,25 @@ app.use('/tasks', taskRoutes);
 app.use('/categories', categoryRoutes);
 app.use('/users', userRoutes);
 
+
+const allowedOrigins = [
+  'http://localhost:5173',
+  process.env.CLIENT_ORIGIN,
+  process.env.CLIENT_ORIGIN_PREVIEW,
+].filter(Boolean);
+
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error(`Not allowed by CORS: ${origin}`));
+      }
+    },
+    credentials: true,
+  })
+);
 // Start server only after checks pass
 const startServer = async () => {
   try {
