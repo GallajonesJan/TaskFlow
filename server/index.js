@@ -13,7 +13,7 @@ import attachmentRoutes from './routes/attachments.js';
 import { runPreflightChecks } from './utils/preflight.js';
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+
 
 // Middleware
 app.use(
@@ -45,7 +45,9 @@ const startServer = async () => {
   try {
     await runPreflightChecks();
 
-    app.listen(PORT, '0.0.0.0', () => {
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, '0.0.0.0', () => {
   console.log(`Server running on port ${PORT}`);
 });
   } catch (error) {
