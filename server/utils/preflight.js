@@ -48,7 +48,7 @@ const checkSupabaseConnection = async () => {
   console.log('✅ Supabase connection OK');
 };
 
-const checkEmailService = async () => {
+//const checkEmailService = async () => {
   const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
@@ -63,4 +63,4 @@ const checkEmailService = async () => {
   } catch (error) {
     throw new Error(`Email service failed: ${error.message}`);
   }
-};
+;
