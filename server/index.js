@@ -14,12 +14,12 @@ import { runPreflightChecks } from './utils/preflight.js';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-const CLIENT_ORIGIN = process.env.CLIENT_ORIGIN || 'http://localhost:5173';
 
 // Middleware
 app.use(
   cors({
-    origin: CLIENT_ORIGIN,
+    origin: process.env.CLIENT_ORIGIN,
+    credentials: true,
   })
 );
 app.use(express.json());
