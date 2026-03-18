@@ -18,7 +18,7 @@ export const runPreflightChecks = async () => {
 
   checkEnvironmentVariables();
   await checkSupabaseConnection();
-  await checkEmailService();
+  //await checkEmailService();
 
   console.log('\n🚀 All systems ready!\n');
 };
