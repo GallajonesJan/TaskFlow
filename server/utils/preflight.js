@@ -18,7 +18,9 @@ export const runPreflightChecks = async () => {
 
   checkEnvironmentVariables();
   await checkSupabaseConnection();
-  //await checkEmailService();
+
+  // Do not let email verification block deployment/startup
+  await checkEmailService();
 
   console.log('\n🚀 All systems ready!\n');
 };
@@ -48,7 +50,7 @@ const checkSupabaseConnection = async () => {
   console.log('✅ Supabase connection OK');
 };
 
-//const checkEmailService = async () => {
+const checkEmailService = async () => {
   const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
@@ -61,6 +63,6 @@ const checkSupabaseConnection = async () => {
     await transporter.verify();
     console.log('✅ Email service OK');
   } catch (error) {
-    throw new Error(`Email service failed: ${error.message}`);
+    console.warn(`⚠️ Email service warning: ${error.message}`);
   }
-;
+};
